@@ -21,6 +21,10 @@ def drawFace(x,y):
     Arc((x-40,y), 10, 90,270)
     Arc((x+40,y), 10, -90, 100)
 
-drawFace(300,200)
+for row in range(8):
+    for col in range(9):
+        x = col *100
+        y = row *100
+        drawFace(x,y)
 update_when('key_pressed') 
 end_graphics()
