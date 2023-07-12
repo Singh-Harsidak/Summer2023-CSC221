@@ -2,25 +2,25 @@ from gasp import *
 
 begin_graphics()
 
-Circle((100,200),40)
+
+def drawFace(x,y):
+    Circle((x,y),40)
 
 
-for x in 85,115:
-    Circle((x,210), 5)
 
-Line((100,210),(90,190))
+    Circle((x-15,y), 5)
+    Circle((x+15,y), 5)
 
-Line((90,190),(110,190))
+    Line((x,y+10),(x-10,y-10))
 
-Arc((100, 200), 30, 225, 315)
+    Line((x-10,y-10),(x+10,y-10))
 
-
-for x in range(75,100,5):
-    Arc((x,215), 30, -225, -315)
-
-Arc((60,200), 10, 90,270)
-Arc((140,200), 10, -90, 100)
+    Arc((x,y), 30, 225, 315)
 
 
+    Arc((x-40,y), 10, 90,270)
+    Arc((x+40,y), 10, -90, 100)
+
+drawFace(300,200)
 update_when('key_pressed') 
 end_graphics()
