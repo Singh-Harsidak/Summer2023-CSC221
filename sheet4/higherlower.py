@@ -15,4 +15,10 @@ while True:
     else:
         end = f"Correct! You guessed {estimates} times"
         print(end)
-        break 
+        x = randint(1,1000)
+        estimates = 0
+        y = input("Do you want play again?")
+        if y == 'Yes':
+            continue
+        else:
+            break 
