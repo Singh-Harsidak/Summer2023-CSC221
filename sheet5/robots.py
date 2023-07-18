@@ -4,9 +4,13 @@ begin_graphics()            # Create a graphics window
 finished = False
 player_x = random.randint(0,63)
 player_y = random.randint(0,47)
+robot_x = random.randint(0,63)
+robot_y = random.randint(0,47)
+
 def place_player():
     global player_shape
     player_shape = Circle((10 * player_x + 5, 10 * player_y + 5), 5, filled=True)
+
 
 def move_player():
     global player_x, player_y
@@ -43,14 +47,15 @@ def move_player():
             player_x += 1
         if player_y < 47:
             player_y += 1
-    
-    
-    
+
     
     move_to(player_shape, (10 * player_x + 5, 10 * player_y + 5))
 
+def place_robot():
+    robot_shape = Box((10 * robot_x + 3, 10 * robot_y + 3), 100,100)
 
 place_player()
+place_robot()
 
 while not finished:
     move_player()
