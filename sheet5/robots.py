@@ -52,12 +52,28 @@ def move_player():
     move_to(player_shape, (10 * player_x + 5, 10 * player_y + 5))
 
 def place_robot():
+    global robot_shape
     robot_shape = Box((10 * robot_x + 3, 10 * robot_y + 3), 100,100)
+
+def move_robot():
+    global robot_x, robot_y, player_x, player_y
+    if robot_x < player_x:
+        robot_x += 1
+    elif robot_x > player_x:
+        robot_x -= 1
+
+    if robot_y < player_y:
+        robot_y += 1
+    elif robot_y > player_y:
+        robot_y -= 1
+
+    move_to(robot_shape, (10 * robot_x + 3, 10 * robot_y + 3))
 
 place_player()
 place_robot()
 
 while not finished:
     move_player()
+    move_robot()
 
 end_graphics()              # Finished!
