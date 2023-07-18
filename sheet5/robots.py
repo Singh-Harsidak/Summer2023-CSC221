@@ -1,5 +1,6 @@
 from gasp import *          # So that you can draw things
 from random import randint
+from time import sleep
 begin_graphics()            # Create a graphics window
 finished = False
 player_x = random.randint(0,63)
@@ -53,7 +54,7 @@ def move_player():
 
 def place_robot():
     global robot_shape
-    robot_shape = Box((10 * robot_x + 3, 10 * robot_y + 3), 100,100)
+    robot_shape = Box((10 * robot_x + 3, 10 * robot_y + 3), 10,10)
 
 def move_robot():
     global robot_x, robot_y, player_x, player_y
@@ -69,11 +70,20 @@ def move_robot():
 
     move_to(robot_shape, (10 * robot_x + 3, 10 * robot_y + 3))
 
-place_player()
+def check_collision():
+    global finished
+    if player_x == robot_x and player_y == robot_y:
+        finished = True
+        message = Text("You've been caught!", (200, 200), size=30)
+        sleep(3)  
+        remove_from_screen(message)
+
 place_robot()
+place_player()
 
 while not finished:
     move_player()
     move_robot()
+    check_collision()
 
 end_graphics()              # Finished!
