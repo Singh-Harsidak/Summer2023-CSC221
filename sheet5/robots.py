@@ -8,6 +8,7 @@ player_y = random.randint(0,47)
 robot_x = random.randint(0,63)
 robot_y = random.randint(0,47)
 
+
 def place_player():
     global player_shape
     player_shape = Circle((10 * player_x + 5, 10 * player_y + 5), 5, filled=True)
@@ -52,6 +53,7 @@ def move_player():
     
     move_to(player_shape, (10 * player_x + 5, 10 * player_y + 5))
 
+
 def place_robot():
     global robot_shape
     robot_shape = Box((10 * robot_x + 3, 10 * robot_y + 3), 10,10)
@@ -70,13 +72,21 @@ def move_robot():
 
     move_to(robot_shape, (10 * robot_x + 3, 10 * robot_y + 3))
 
+def collided():
+    if player_x == robot_x and player_y == robot_y:
+        return True
+    else:
+        return False
+
 def check_collision():
     global finished
-    if player_x == robot_x and player_y == robot_y:
+    if collided():
         finished = True
         message = Text("You've been caught!", (200, 200), size=30)
         sleep(3)  
         remove_from_screen(message)
+
+
 
 place_robot()
 place_player()
