@@ -13,6 +13,17 @@ def place_player():
     global player_shape
     player_shape = Circle((10 * player_x + 5, 10 * player_y + 5), 5, filled=True)
 
+def collided():
+    if player_x == robot_x and player_y == robot_y:
+        return True
+    else:
+        return False
+    
+def safely_place_player():
+    place_player()
+
+    while collided():
+        place_player()
 
 def move_player():
     global player_x, player_y
@@ -72,11 +83,6 @@ def move_robot():
 
     move_to(robot_shape, (10 * robot_x + 3, 10 * robot_y + 3))
 
-def collided():
-    if player_x == robot_x and player_y == robot_y:
-        return True
-    else:
-        return False
 
 def check_collision():
     global finished
@@ -89,7 +95,7 @@ def check_collision():
 
 
 place_robot()
-place_player()
+safely_place_player()
 
 while not finished:
     move_player()
