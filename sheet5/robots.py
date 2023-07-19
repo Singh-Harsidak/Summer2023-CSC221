@@ -8,11 +8,7 @@ player_y = random.randint(0,47)
 robot_x = random.randint(0,63)
 robot_y = random.randint(0,47)
 
-
-def place_player():
-    global player_shape
-    player_shape = Circle((10 * player_x + 5, 10 * player_y + 5), 5, filled=True)
-
+    
 def collided():
     if player_x == robot_x and player_y == robot_y:
         return True
@@ -20,10 +16,17 @@ def collided():
         return False
     
 def safely_place_player():
-    place_player()
+    global player_shape, player_x, player_y
+    player_shape = Circle((10 * player_x + 5, 10 * player_y + 5), 5, filled=True)
+
+
 
     while collided():
-        place_player()
+        player_x = random.randint(0,63)
+        player_y = random.randint(0,47)
+        player_shape = Circle((10 * player_x + 5, 10 * player_y + 5), 5, filled=True)
+
+        
 
 def move_player():
     global player_x, player_y
