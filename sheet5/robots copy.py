@@ -83,13 +83,15 @@ def move_player():
 def place_robots():
     global robots
 
-    for i in range(numbots):
-        robot = Robot()  # Create a new Robot instance
-        robot.x = random.randint(0, 63)
-        robot.y = random.randint(0, 47)
-        robot.shape = Box((10 * robot.x + 3, 10 * robot.y + 3), 10, 10)
-
-        robots.append(robot)  # Add the robot to the list
+    robots = []
+    
+    while len(robots) < numbots:
+        robot = Robot()
+        robot.x = randint(0, 63)
+        robot.y = randint(0, 47)
+        if not collided(robot, robots):
+            robot.shape = Box((10 * robot.x, 10 * robot.y), 10, 10)
+            robots.append(robot)
 
 def move_robot():
     global robots
