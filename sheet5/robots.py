@@ -17,20 +17,28 @@ def collided():
     
 def safely_place_player():
     global player_shape, player_x, player_y
-    player_shape = Circle((10 * player_x + 5, 10 * player_y + 5), 5, filled=True)
-
-
+    player_x = random.randint(0,63)
+    player_y = random.randint(0,47)
 
     while collided():
         player_x = random.randint(0,63)
         player_y = random.randint(0,47)
-        player_shape = Circle((10 * player_x + 5, 10 * player_y + 5), 5, filled=True)
-
         
+    player_shape = Circle((10 * player_x + 5, 10 * player_y + 5), 5, filled=True)
+
 
 def move_player():
-    global player_x, player_y
-    key = update_when('key_pressed')
+    global player_x, player_y, player_shape
+    
+    while True:
+        key = update_when('key_pressed')
+
+        if key == '5':
+            remove_from_screen(player_shape)
+            safely_place_player()
+            
+        else:
+            break
     if key == '1':
         if player_x >0:
             player_x -=1 
