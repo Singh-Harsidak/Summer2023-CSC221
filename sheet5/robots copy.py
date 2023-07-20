@@ -11,27 +11,25 @@ class Robot:
 begin_graphics()
 finished = False 
 numbots = 10
-robots = []  # Create an empty list to store the robots
+robots = []  
 
 player_x = random.randint(0, 63)
 player_y = random.randint(0, 47)
 
-def collided():
-    global player_x, player_y, robots
-
-    for robot in robots:
-        if player_x == robot.x and player_y == robot.y:
+def collided(thing1, list_of_things):
+    for thing2 in list_of_things:
+        if thing1.x == thing2.x and thing1.y == thing2.y:
             return True
-
     return False
 
 def safely_place_player():
     global player
+
     player = Player()
     player.x = random.randint(0, 63)
     player.y = random.randint(0, 47)
 
-    while collided():
+    while collided(player, robots):  
         player.x = random.randint(0, 63)
         player.y = random.randint(0, 47)
 
