@@ -84,7 +84,7 @@ def place_robots():
     global robots
 
     robots = []
-    
+
     while len(robots) < numbots:
         robot = Robot()
         robot.x = randint(0, 63)
@@ -93,7 +93,7 @@ def place_robots():
             robot.shape = Box((10 * robot.x, 10 * robot.y), 10, 10)
             robots.append(robot)
 
-def move_robot():
+def move_robots():
     global robots
 
     for robot in robots:
@@ -124,7 +124,7 @@ safely_place_player()
 
 while not finished:
     move_player()
-    move_robot()
+    move_robots()
     check_collision()
 
 end_graphics()
