@@ -8,7 +8,6 @@ class Player:
 class Robot:
     pass
 
-begin_graphics()
 finished = False 
 numbots = 10
 robots = []  
@@ -119,6 +118,7 @@ def check_collision():
             sleep(3)
             remove_from_screen(message)
 
+begin_graphics()
 place_robots()
 safely_place_player()
 
