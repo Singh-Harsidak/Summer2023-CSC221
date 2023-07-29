@@ -11,9 +11,10 @@ class Robot:
 finished = False 
 numbots = 10
 robots = []  
+junk = []  # Create an empty list to store junk (dead robots)
 
-player_x = random.randint(0, 63)
-player_y = random.randint(0, 47)
+player_x = randint(0, 63)
+player_y = randint(0, 47)
 
 def collided(thing1, list_of_things):
     for thing2 in list_of_things:
@@ -25,14 +26,22 @@ def safely_place_player():
     global player
 
     player = Player()
-    player.x = random.randint(0, 63)
-    player.y = random.randint(0, 47)
+    player.x = randint(0, 63)
+    player.y = randint(0, 47)
 
-    while collided(player, robots):  
-        player.x = random.randint(0, 63)
-        player.y = random.randint(0, 47)
+    while collided(player, robots + junk):  
+        player.x = randint(0, 63)
+        player.y = randint(0, 47)
 
     player.shape = Circle((10 * player.x + 5, 10 * player.y + 5), 5, filled=True)
+
+def robot_crashed(the_bot):
+    for a_bot in robots:
+        if a_bot == the_bot:    # we have reached our self in the list
+            return False
+        if a_bot.x == the_bot.x and a_bot.y == the_bot.y:  # a crash
+            return a_bot
+    return False
 
 def move_player():
     global player, player_x, player_y
@@ -75,6 +84,9 @@ def move_player():
             player.x += 1
         if player.y < 47:
             player.y += 1
+    else:
+        player_x = player_x +0 
+        player_y = player_y +0
 
     player_x, player_y = player.x, player.y
     move_to(player.shape, (10 * player.x + 5, 10 * player.y + 5))
@@ -108,15 +120,53 @@ def move_robots():
 
         move_to(robot.shape, (10 * robot.x + 3, 10 * robot.y + 3))
 
-def check_collision():
-    global finished
+def check_collisions():
+    global finished, robots, junk
 
+    # Handle player crashes into robot
+    if collided(player, robots + junk):
+        finished = True
+        Text("You've been caught!",(320, 240), size=36)
+        sleep(3)
+        return
+
+    # Handle robot crashes
+    surviving_robots = []
     for robot in robots:
-        if robot.x == player.x and robot.y == player.y:
-            finished = True
-            message = Text("You've been caught!", (200, 200), size=30)
-            sleep(3)
-            remove_from_screen(message)
+        # Check if the robot has hit a piece of junk and discard it
+        if collided(robot, junk):
+            continue
+
+        # Check if the robot has crashed with another robot
+        jbot = robot_crashed(robot)
+
+        if not jbot:
+            # Append the robot to surviving_robots
+            surviving_robots.append(robot)
+        else:
+            # Remove the robot shape from the screen
+            remove_from_screen(robot.shape)
+
+            if jbot in robots:
+                # Remove the other crashed robot shape from the screen
+                remove_from_screen(jbot.shape)
+                # Change the other crashed robot into junk and append it to the junk list
+                jbot.shape = Box((10 * jbot.x, 10 * jbot.y), 10, 10, filled=True, color=color.YELLOW)
+                junk.append(jbot)
+
+                # Change the current robot into junk and append it to the junk list
+                robot.shape = Box((10 * robot.x, 10 * robot.y), 10, 10, filled=True, color=color.YELLOW)
+                junk.append(robot)
+
+    # Update the robots list with the surviving robots
+    robots = surviving_robots
+
+    # Check if robots is empty (if not robots)
+    if not robots:
+        finished = True
+        Text("You win!", (320, 240), size=36)
+        sleep(3)
+        return
 
 begin_graphics()
 place_robots()
@@ -125,6 +175,6 @@ safely_place_player()
 while not finished:
     move_player()
     move_robots()
-    check_collision()
+    check_collisions()
 
 end_graphics()
