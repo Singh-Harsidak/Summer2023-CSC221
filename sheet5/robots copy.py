@@ -121,7 +121,7 @@ def move_robots():
         move_to(robot.shape, (10 * robot.x + 3, 10 * robot.y + 3))
 
 def check_collisions():
-    global finished, robots, junk
+    global finished, robots, junk, score, score_text
 
     # Handle player crashes into robot
     if collided(player, robots + junk):
@@ -158,6 +158,11 @@ def check_collisions():
                 robot.shape = Box((10 * robot.x, 10 * robot.y), 10, 10, filled=True, color=color.YELLOW)
                 junk.append(robot)
 
+                # Increment the score by 2 for each robot that becomes junk
+                score += 2
+                remove_from_screen(score_text)
+                score_text = Text(f"Score: {score}", (50, 450), size=10)
+
     # Update the robots list with the surviving robots
     robots = surviving_robots
 
@@ -168,10 +173,12 @@ def check_collisions():
         sleep(3)
         return
 
-begin_graphics()
+begin_graphics(640,480)
 place_robots()
 safely_place_player()
 
+score = 0
+score_text = Text("Score: 0", (50, 450), size=10)
 while not finished:
     move_player()
     move_robots()
